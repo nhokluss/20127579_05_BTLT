@@ -21,6 +21,12 @@ function App()
             setFeedback(feedback.filter((item)=>item.id!==id)
             )}
     }
+    const [feedbackEdit,setFeedbackEdit]=useState({item:{},
+        edit:false
+    })
+    const editFeedback=(item)=>{
+       setFeedbackEdit({item,edit:true})
+    }
     return(
     <Router>
         <Header />
@@ -32,6 +38,7 @@ function App()
                 <>
             <FeedbackForm handleAdd={addFeedback}/>
             <FeedbackStats feedback={feedback}/>
+            <feedbackEdit editFeedback={editFeedback}/>
             <FeedbackList
              feedback={feedback}
              handleDelete={deleteFeedback} />

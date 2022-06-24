@@ -1,8 +1,9 @@
 import Card from "./shared/Card";
 import React from "react";
-import {FaTimes} from "react-icons/fa";
+import {FaTimes,FaEdit} from "react-icons/fa";
 import PropTypes from 'prop-types';
-function Feedbackitem({item,handleDelete})
+
+function Feedbackitem({item,handleDelete,editFeedback})
 {
     
     return(
@@ -13,7 +14,9 @@ function Feedbackitem({item,handleDelete})
         <button onClick={()=>handleDelete(item.id)} className='close'>
             <FaTimes color='purple'/>
         </button>
-
+        <button onClick={()=>editFeedback(item)} className="edit">
+            <FaEdit color='purple'/>
+        </button>
         <div className="text-display"> {item.text} </div>
     </Card>
     
