@@ -12,4 +12,4 @@ function AboutLinkIcon() {
   )
 }
 
-export default AboutLinkIcon
+export default AboutLinkIcon 

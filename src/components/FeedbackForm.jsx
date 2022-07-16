@@ -1,40 +1,59 @@
-import React from 'react'
-import Card from './shared/Card'
-import {useState} from 'react'
-import Button from './shared/Button'
+import { useState, useContext, useEffect } from 'react'
 import Rating from './Rating'
-function FeedbackForm({handleAdd}) {
-    const [text,setText]=useState('')
-    const [rating,setRating]=useState('10')
-    const [btnDisabled,setBtnDisabled]=useState('true')
-    const [message,setMessage]=useState('')
-    const handleTextChange=(e)=>{
-        if(text ==='')
-        {
-          setBtnDisabled(true)
-          setMessage(null)
-        } else if(text !==''&&text.trim().length<=10)
-        {
-           setMessage('Text must be at least 10 character')
-           setBtnDisabled(true)
-        }
-        else{
-          setMessage(null)
-          setBtnDisabled(false)
-        }
-        setText(e.target.value)
+import Card from './shared/Card'
+import Button from './shared/Button'
+import React from 'react'
+import FeedbackContext from '../context/FeedbackContext'
+function FeedbackForm() {
+  const [text, setText] = useState('')
+  const [rating, setRating] = useState(10)
+  const [btnDisabled, setBtnDisabled] = useState(true)
+  const [message, setMessage] = useState('')
+
+  const { addFeedback, feedbackEdit, updateFeedback } =
+    useContext(FeedbackContext)
+
+  useEffect(() => {
+    if (feedbackEdit.edit === true) {
+      setBtnDisabled(false)
+      setText(feedbackEdit.item.text)
+      setRating(feedbackEdit.item.rating)
     }
-    const handleSubmit=(e)=>{e.preventDefault()
-      if(text.trim().length>10)
-      {
-const newFeedback={
-  text,
-  rating
-}
-    handleAdd(newFeedback)
-    setText('')
+  }, [feedbackEdit])
+  const handleTextChange = ({ target: { value } }) => { 
+    if (value === '') {
+      setBtnDisabled(true)
+      setMessage(null)
+    } else if (value.trim().length < 10) { 
+      setMessage('Text must be at least 10 characters')
+      setBtnDisabled(true)
+    } else {
+      setMessage(null)
+      setBtnDisabled(false)
+    }
+    setText(value)
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    if (text.trim().length > 10) {
+      const newFeedback = {
+        text,
+        rating,
       }
+
+      if (feedbackEdit.edit === true) {
+        updateFeedback(feedbackEdit.item.id, newFeedback)
+      } else {
+        addFeedback(newFeedback)
+      }
+
+      
+      setBtnDisabled(true) 
+      setRating(10) 
+      setText('')
     }
+  }
   return (
     <Card>
        <form onSubmit={handleSubmit}>
